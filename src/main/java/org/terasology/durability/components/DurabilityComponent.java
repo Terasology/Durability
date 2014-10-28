@@ -28,13 +28,21 @@ public class DurabilityComponent implements Component {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         DurabilityComponent that = (DurabilityComponent) o;
 
-        if (durability != that.durability) return false;
-        if (maxDurability != that.maxDurability) return false;
+        if (durability != that.durability) {
+            return false;
+        }
+        if (maxDurability != that.maxDurability) {
+            return false;
+        }
 
         return true;
     }

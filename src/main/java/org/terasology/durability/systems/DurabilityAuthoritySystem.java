@@ -128,12 +128,16 @@ public class DurabilityAuthoritySystem extends BaseComponentSystem implements Up
 
 
     @ReceiveEvent
-    public void dropBlockWithRetainDurability(OnBlockToItem event, EntityRef blockEntity, RetainDurabilityComponent retainDurabilityComponent, DurabilityComponent durabilityComponent) {
+    public void dropBlockWithRetainDurability(OnBlockToItem event, EntityRef blockEntity,
+                                              RetainDurabilityComponent retainDurabilityComponent,
+                                              DurabilityComponent durabilityComponent) {
         saveRetainDurability(retainDurabilityComponent, durabilityComponent, event.getItem());
     }
 
     @ReceiveEvent
-    public void placeBlockWithRetainDurability(OnBlockItemPlaced event, EntityRef itemEntity, RetainDurabilityComponent retainDurabilityComponent, DurabilityComponent durabilityComponent) {
+    public void placeBlockWithRetainDurability(OnBlockItemPlaced event, EntityRef itemEntity,
+                                               RetainDurabilityComponent retainDurabilityComponent,
+                                               DurabilityComponent durabilityComponent) {
         saveRetainDurability(retainDurabilityComponent, durabilityComponent, event.getPlacedBlock());
     }
 
