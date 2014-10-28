@@ -66,26 +66,22 @@ public class DurabilityAuthoritySystem extends BaseComponentSystem implements Up
         }
     }
 
-    @ReceiveEvent(components = {BlockComponent.class}, priority = EventPriority.PRIORITY_CRITICAL)
-    public void reduceItemDurabilityOnBlockDestroyed(DestroyEvent event, EntityRef entity) {
+    @ReceiveEvent(priority = EventPriority.PRIORITY_CRITICAL)
+    public void reduceItemDurabilityOnBlockDestroyed(DestroyEvent event, EntityRef entity, BlockComponent blockComponent) {
         EntityRef tool = event.getDirectCause();
         DurabilityComponent durabilityComponent = tool.getComponent(DurabilityComponent.class);
         if (durabilityComponent != null) {
-            BlockComponent blockComponent = entity.getComponent(BlockComponent.class);
-            if (blockComponent != null) {
-                Block block = blockComponent.getBlock();
-                Iterable<String> categoriesIterator = block.getBlockFamily().getCategories();
-                if (isTheRightTool(categoriesIterator, event.getDamageType())) {
-                    // It was the right tool for the job, so reduce the durability
-                    tool.send(new ReduceDurabilityEvent(1));
-                }
+            Block block = blockComponent.getBlock();
+            Iterable<String> categoriesIterator = block.getBlockFamily().getCategories();
+            if (isTheRightTool(categoriesIterator, event.getDamageType())) {
+                // It was the right tool for the job, so reduce the durability
+                tool.send(new ReduceDurabilityEvent(1));
             }
         }
     }
 
-    @ReceiveEvent(components = {DurabilityComponent.class})
-    public void reduceDurability(ReduceDurabilityEvent event, EntityRef entity) {
-        DurabilityComponent durabilityComponent = entity.getComponent(DurabilityComponent.class);
+    @ReceiveEvent
+    public void reduceDurability(ReduceDurabilityEvent event, EntityRef entity, DurabilityComponent durabilityComponent) {
         durabilityComponent.durability -= event.getReduceBy();
         if (durabilityComponent.durability < 0) {
             durabilityComponent.durability = 0;
@@ -95,10 +91,9 @@ public class DurabilityAuthoritySystem extends BaseComponentSystem implements Up
         entity.send(new DurabilityReducedEvent());
     }
 
-    @ReceiveEvent(components = {DurabilityComponent.class})
-    public void checkIfDurabilityExhausted(DurabilityReducedEvent event, EntityRef entity) {
-        DurabilityComponent durability = entity.getComponent(DurabilityComponent.class);
-        if (durability.durability == 0) {
+    @ReceiveEvent
+    public void checkIfDurabilityExhausted(DurabilityReducedEvent event, EntityRef entity, DurabilityComponent durabilityComponent) {
+        if (durabilityComponent.durability == 0) {
             entity.send(new DurabilityExhaustedEvent());
         }
     }

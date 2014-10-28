@@ -21,5 +21,8 @@ import org.terasology.world.block.items.AddToBlockBasedItem;
 
 @AddToBlockBasedItem
 @ForceBlockActive
+/**
+ * Reduces 1 durability every 5 seconds
+ */
 public class OverTimeDurabilityReduceComponent implements Component {
 }
