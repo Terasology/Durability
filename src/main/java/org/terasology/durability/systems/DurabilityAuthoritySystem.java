@@ -50,6 +50,8 @@ public class DurabilityAuthoritySystem extends BaseComponentSystem implements Up
     private EntityManager entityManager;
     @In
     private WorldProvider worldProvider;
+    @In
+    private BlockManager blockManager;
 
     private long tickLength = 5000;
     private long lastModified;
@@ -106,7 +108,7 @@ public class DurabilityAuthoritySystem extends BaseComponentSystem implements Up
 
     @ReceiveEvent(priority = EventPriority.PRIORITY_TRIVIAL)
     public void destroyItemOnZeroDurability(DurabilityExhaustedEvent event, EntityRef entity, DurabilityComponent durabilityComponent, BlockComponent blockComponent) {
-        worldProvider.setBlock(blockComponent.getPosition(), BlockManager.getAir());
+        worldProvider.setBlock(blockComponent.getPosition(), blockManager.getBlock(BlockManager.AIR_ID));
         event.consume();
     }
 
