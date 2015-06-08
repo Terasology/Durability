@@ -1,6 +1,6 @@
 {
     "id" : "Durability",
-    "version" : "0.1.0",
+    "version" : "0.1.1-SNAPSHOT",
     "author" : "MarcinSc,Josharias",
     "displayName" : "Durability",
     "description" : "A library for items and blocks to go poof after much use",
