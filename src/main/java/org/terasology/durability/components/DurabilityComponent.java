@@ -19,8 +19,7 @@ import org.terasology.entitySystem.Component;
 import org.terasology.logic.inventory.ItemDifferentiating;
 import org.terasology.network.Replicate;
 
-@ItemDifferentiating
-public class DurabilityComponent implements Component {
+public class DurabilityComponent implements Component, ItemDifferentiating {
     @Replicate
     public int durability;
     @Replicate
