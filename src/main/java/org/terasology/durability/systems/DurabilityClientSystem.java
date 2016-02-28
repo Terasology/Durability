@@ -15,7 +15,7 @@
  */
 package org.terasology.durability.systems;
 
-import org.terasology.asset.Assets;
+import org.terasology.utilities.Assets;
 import org.terasology.assets.ResourceUrn;
 import org.terasology.durability.components.DurabilityComponent;
 import org.terasology.entitySystem.entity.EntityRef;
