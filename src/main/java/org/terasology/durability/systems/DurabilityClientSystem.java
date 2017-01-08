@@ -33,8 +33,20 @@ import org.terasology.rendering.nui.layers.ingame.inventory.GetItemTooltip;
 import org.terasology.rendering.nui.layers.ingame.inventory.InventoryCellRendered;
 import org.terasology.rendering.nui.widgets.TooltipLine;
 
+/**
+ * System that handles the UI parts of displaying the durability for the client.
+ */
 @RegisterSystem(RegisterMode.CLIENT)
 public class DurabilityClientSystem extends BaseComponentSystem {
+
+    /**
+     * An event sent after the inventory cell has been rendered.
+     * Used to draw the durability bar over the item in the cell.
+     *
+     * @param event The event sent
+     * @param entity The entity sending the event
+     * @param durability
+     */
     @ReceiveEvent
     public void drawDurabilityBar(InventoryCellRendered event, EntityRef entity, DurabilityComponent durability) {
         Canvas canvas = event.getCanvas();
@@ -69,6 +81,14 @@ public class DurabilityClientSystem extends BaseComponentSystem {
         return new Color(awtColor.getRed(), awtColor.getGreen(), awtColor.getBlue());
     }
 
+    /**
+     * Event sent when the tooltip is requested.
+     * Event is modified to include a line on durability.
+     *
+     * @param event The event sent
+     * @param entity The entity sending the event
+     * @param durability The durability component of the entity
+     */
     @ReceiveEvent
     public void getDurabilityItemTooltip(GetItemTooltip event, EntityRef entity, DurabilityComponent durability) {
         float durabilityPercentage = 1f * durability.durability / durability.maxDurability;
