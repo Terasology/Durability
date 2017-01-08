@@ -13,10 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.terasology.durability.events;
 
 import org.terasology.entitySystem.event.Event;
 
+/**
+ * Event sent when the durability of an item is reduced.
+ */
 public class ReduceDurabilityEvent implements Event {
     private int reduceBy;
 
@@ -24,6 +28,9 @@ public class ReduceDurabilityEvent implements Event {
         this.reduceBy = reduceBy;
     }
 
+    /**
+     * @return The amount to reduce by
+     */
     public int getReduceBy() {
         return reduceBy;
     }
