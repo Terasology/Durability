@@ -2,23 +2,23 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.durability.systems;
 
-import org.terasology.math.JomlUtil;
-import org.terasology.utilities.Assets;
-import org.terasology.assets.ResourceUrn;
+import org.joml.Vector2i;
 import org.terasology.durability.components.DurabilityComponent;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
-import org.joml.Vector2i;
-import org.terasology.rendering.assets.texture.Texture;
-import org.terasology.rendering.assets.texture.TextureUtil;
+import org.terasology.gestalt.assets.ResourceUrn;
+import org.terasology.math.JomlUtil;
 import org.terasology.nui.Canvas;
 import org.terasology.nui.Color;
+import org.terasology.nui.widgets.TooltipLine;
+import org.terasology.rendering.assets.texture.Texture;
+import org.terasology.rendering.assets.texture.TextureUtil;
 import org.terasology.rendering.nui.layers.ingame.inventory.GetItemTooltip;
 import org.terasology.rendering.nui.layers.ingame.inventory.InventoryCellRendered;
-import org.terasology.nui.widgets.TooltipLine;
+import org.terasology.utilities.Assets;
 
 /**
  * System that handles the UI parts of displaying the durability for the client.
