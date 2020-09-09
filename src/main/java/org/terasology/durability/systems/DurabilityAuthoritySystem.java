@@ -1,18 +1,5 @@
-/*
- * Copyright 2014 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.durability.systems;
 
 import org.terasology.durability.components.DurabilityComponent;
@@ -21,32 +8,33 @@ import org.terasology.durability.components.RetainDurabilityComponent;
 import org.terasology.durability.events.DurabilityExhaustedEvent;
 import org.terasology.durability.events.DurabilityReducedEvent;
 import org.terasology.durability.events.ReduceDurabilityEvent;
-import org.terasology.engine.Time;
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.event.EventPriority;
-import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.prefab.Prefab;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterMode;
-import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
-import org.terasology.logic.health.DestroyEvent;
-import org.terasology.logic.inventory.ItemComponent;
-import org.terasology.registry.In;
-import org.terasology.world.WorldProvider;
-import org.terasology.world.block.Block;
-import org.terasology.world.block.BlockComponent;
-import org.terasology.world.block.BlockManager;
-import org.terasology.world.block.entity.damage.BlockDamageModifierComponent;
-import org.terasology.world.block.items.OnBlockItemPlaced;
-import org.terasology.world.block.items.OnBlockToItem;
+import org.terasology.engine.core.Time;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.event.EventPriority;
+import org.terasology.engine.entitySystem.event.ReceiveEvent;
+import org.terasology.engine.entitySystem.prefab.Prefab;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterMode;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.entitySystem.systems.UpdateSubscriberSystem;
+import org.terasology.engine.logic.destruction.DestroyEvent;
+import org.terasology.engine.logic.inventory.ItemComponent;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.world.WorldProvider;
+import org.terasology.engine.world.block.Block;
+import org.terasology.engine.world.block.BlockComponent;
+import org.terasology.engine.world.block.BlockManager;
+import org.terasology.engine.world.block.entity.damage.BlockDamageModifierComponent;
+import org.terasology.engine.world.block.items.OnBlockItemPlaced;
+import org.terasology.engine.world.block.items.OnBlockToItem;
 
 /**
  * Authority system that handles reducing durability and destroying items
  */
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class DurabilityAuthoritySystem extends BaseComponentSystem implements UpdateSubscriberSystem {
+    private final long tickLength = 5000;
     @In
     private Time time;
     @In
@@ -55,15 +43,14 @@ public class DurabilityAuthoritySystem extends BaseComponentSystem implements Up
     private WorldProvider worldProvider;
     @In
     private BlockManager blockManager;
-
-    private long tickLength = 5000;
     private long lastModified;
 
     @Override
     public void update(float delta) {
         long gameTimeInMs = time.getGameTimeInMs();
         if (lastModified + tickLength < gameTimeInMs) {
-            for (EntityRef entityRef : entityManager.getEntitiesWith(OverTimeDurabilityReduceComponent.class, DurabilityComponent.class)) {
+            for (EntityRef entityRef : entityManager.getEntitiesWith(OverTimeDurabilityReduceComponent.class,
+                    DurabilityComponent.class)) {
                 entityRef.send(new ReduceDurabilityEvent(1));
             }
 
@@ -72,15 +59,16 @@ public class DurabilityAuthoritySystem extends BaseComponentSystem implements Up
     }
 
     /**
-     * Reduces the durability of a tool when it is used to destroy a block.
-     * It does so by sending a new ReduceDurability event.
+     * Reduces the durability of a tool when it is used to destroy a block. It does so by sending a new ReduceDurability
+     * event.
      *
-     * @param event          The Destroy event
-     * @param entity         The entity that instigated it
+     * @param event The Destroy event
+     * @param entity The entity that instigated it
      * @param blockComponent The block component of the entity.
      */
     @ReceiveEvent(priority = EventPriority.PRIORITY_CRITICAL)
-    public void reduceItemDurabilityOnBlockDestroyed(DestroyEvent event, EntityRef entity, BlockComponent blockComponent) {
+    public void reduceItemDurabilityOnBlockDestroyed(DestroyEvent event, EntityRef entity,
+                                                     BlockComponent blockComponent) {
         EntityRef tool = event.getDirectCause();
         DurabilityComponent durabilityComponent = tool.getComponent(DurabilityComponent.class);
         if (durabilityComponent != null) {
@@ -94,17 +82,18 @@ public class DurabilityAuthoritySystem extends BaseComponentSystem implements Up
     }
 
     /**
-     * Sent every time the durability on an entity should be reduced.
-     * This event is sent before the durability is reduced
+     * Sent every time the durability on an entity should be reduced. This event is sent before the durability is
+     * reduced
      * <p>
      * Reduces the durability by the specified amount.
      *
-     * @param event               The event that was sent
-     * @param entity              The entity sending the event
+     * @param event The event that was sent
+     * @param entity The entity sending the event
      * @param durabilityComponent The durability component of the entity
      */
     @ReceiveEvent
-    public void reduceDurability(ReduceDurabilityEvent event, EntityRef entity, DurabilityComponent durabilityComponent) {
+    public void reduceDurability(ReduceDurabilityEvent event, EntityRef entity,
+                                 DurabilityComponent durabilityComponent) {
         durabilityComponent.durability -= event.getReduceBy();
         if (durabilityComponent.durability < 0) {
             durabilityComponent.durability = 0;
@@ -119,12 +108,13 @@ public class DurabilityAuthoritySystem extends BaseComponentSystem implements Up
      * <p>
      * Checks to see if the durability is zero
      *
-     * @param event               The event
-     * @param entity              The entity sending the event
+     * @param event The event
+     * @param entity The entity sending the event
      * @param durabilityComponent The durability component of the entity
      */
     @ReceiveEvent
-    public void checkIfDurabilityExhausted(DurabilityReducedEvent event, EntityRef entity, DurabilityComponent durabilityComponent) {
+    public void checkIfDurabilityExhausted(DurabilityReducedEvent event, EntityRef entity,
+                                           DurabilityComponent durabilityComponent) {
         if (durabilityComponent.durability == 0) {
             entity.send(new DurabilityExhaustedEvent());
         }
@@ -135,13 +125,14 @@ public class DurabilityAuthoritySystem extends BaseComponentSystem implements Up
      * <p>
      * This overload handles items.
      *
-     * @param event               The event sent
-     * @param entity              The entity sending the event
+     * @param event The event sent
+     * @param entity The entity sending the event
      * @param durabilityComponent The durability component of the entity
-     * @param itemComponent       The item component of the entity
+     * @param itemComponent The item component of the entity
      */
     @ReceiveEvent(priority = EventPriority.PRIORITY_TRIVIAL)
-    public void destroyItemOnZeroDurability(DurabilityExhaustedEvent event, EntityRef entity, DurabilityComponent durabilityComponent, ItemComponent itemComponent) {
+    public void destroyItemOnZeroDurability(DurabilityExhaustedEvent event, EntityRef entity,
+                                            DurabilityComponent durabilityComponent, ItemComponent itemComponent) {
         entity.destroy();
         event.consume();
     }
@@ -151,13 +142,14 @@ public class DurabilityAuthoritySystem extends BaseComponentSystem implements Up
      * <p>
      * This overload handles blocks.
      *
-     * @param event               The event sent
-     * @param entity              The entity sending the event
+     * @param event The event sent
+     * @param entity The entity sending the event
      * @param durabilityComponent The durability component of the entity
-     * @param blockComponent      The block component of the entity
+     * @param blockComponent The block component of the entity
      */
     @ReceiveEvent(priority = EventPriority.PRIORITY_TRIVIAL)
-    public void destroyItemOnZeroDurability(DurabilityExhaustedEvent event, EntityRef entity, DurabilityComponent durabilityComponent, BlockComponent blockComponent) {
+    public void destroyItemOnZeroDurability(DurabilityExhaustedEvent event, EntityRef entity,
+                                            DurabilityComponent durabilityComponent, BlockComponent blockComponent) {
         worldProvider.setBlock(blockComponent.getPosition(), blockManager.getBlock(BlockManager.AIR_ID));
         event.consume();
     }
@@ -182,10 +174,10 @@ public class DurabilityAuthoritySystem extends BaseComponentSystem implements Up
     /**
      * Event sent when a block is destroyed and the entity is converted to an item.
      *
-     * @param event                     The event sent
-     * @param blockEntity               The entity sending the event
+     * @param event The event sent
+     * @param blockEntity The entity sending the event
      * @param retainDurabilityComponent Marker indicating that durability should be conserved
-     * @param durabilityComponent       The durability component
+     * @param durabilityComponent The durability component
      */
     @ReceiveEvent
     public void dropBlockWithRetainDurability(OnBlockToItem event, EntityRef blockEntity,
@@ -197,10 +189,10 @@ public class DurabilityAuthoritySystem extends BaseComponentSystem implements Up
     /**
      * Event sent when an item is placed and the entity converted to a block.
      *
-     * @param event                     The event sent
-     * @param itemEntity                The entity sending the event
+     * @param event The event sent
+     * @param itemEntity The entity sending the event
      * @param retainDurabilityComponent Marker indicating that durability should be conserved
-     * @param durabilityComponent       The durability component
+     * @param durabilityComponent The durability component
      */
     @ReceiveEvent
     public void placeBlockWithRetainDurability(OnBlockItemPlaced event, EntityRef itemEntity,
@@ -216,7 +208,8 @@ public class DurabilityAuthoritySystem extends BaseComponentSystem implements Up
      * @param durabilityComponent The durability component to save
      * @param entity The entity that is being changed
      */
-    private void saveRetainDurability(RetainDurabilityComponent retainDurabilityComponent, DurabilityComponent durabilityComponent, EntityRef entity) {
+    private void saveRetainDurability(RetainDurabilityComponent retainDurabilityComponent,
+                                      DurabilityComponent durabilityComponent, EntityRef entity) {
         if (entity.hasComponent(RetainDurabilityComponent.class)) {
             entity.saveComponent(retainDurabilityComponent);
         } else {

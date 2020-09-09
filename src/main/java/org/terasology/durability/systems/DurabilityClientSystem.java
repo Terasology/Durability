@@ -4,21 +4,21 @@ package org.terasology.durability.systems;
 
 import org.joml.Vector2i;
 import org.terasology.durability.components.DurabilityComponent;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterMode;
-import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.event.ReceiveEvent;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterMode;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.math.JomlUtil;
+import org.terasology.engine.rendering.assets.texture.Texture;
+import org.terasology.engine.rendering.assets.texture.TextureUtil;
+import org.terasology.engine.utilities.Assets;
 import org.terasology.gestalt.assets.ResourceUrn;
-import org.terasology.math.JomlUtil;
+import org.terasology.inventory.rendering.nui.layers.ingame.GetItemTooltip;
+import org.terasology.inventory.rendering.nui.layers.ingame.InventoryCellRendered;
 import org.terasology.nui.Canvas;
 import org.terasology.nui.Color;
 import org.terasology.nui.widgets.TooltipLine;
-import org.terasology.rendering.assets.texture.Texture;
-import org.terasology.rendering.assets.texture.TextureUtil;
-import org.terasology.rendering.nui.layers.ingame.inventory.GetItemTooltip;
-import org.terasology.rendering.nui.layers.ingame.inventory.InventoryCellRendered;
-import org.terasology.utilities.Assets;
 
 /**
  * System that handles the UI parts of displaying the durability for the client.
@@ -27,8 +27,8 @@ import org.terasology.utilities.Assets;
 public class DurabilityClientSystem extends BaseComponentSystem {
 
     /**
-     * An event sent after the inventory cell has been rendered.
-     * Used to draw the durability bar over the item in the cell.
+     * An event sent after the inventory cell has been rendered. Used to draw the durability bar over the item in the
+     * cell.
      *
      * @param event The event sent
      * @param entity The entity sending the event
@@ -55,10 +55,12 @@ public class DurabilityClientSystem extends BaseComponentSystem {
 
             ResourceUrn barTexture = TextureUtil.getTextureUriForColor(terasologyColor);
 
-            canvas.drawTexture(Assets.get(backgroundTexture, Texture.class).get(), JomlUtil.rectangleiFromMinAndSize(minX, minY, maxX, maxY));
+            canvas.drawTexture(Assets.get(backgroundTexture, Texture.class).get(),
+                    JomlUtil.rectangleiFromMinAndSize(minX, minY, maxX, maxY));
             int durabilityBarLength = (int) (durabilityPercentage * (maxX - minX - 1));
             int durabilityBarHeight = maxY - minY - 1;
-            canvas.drawTexture(Assets.get(barTexture, Texture.class).get(), JomlUtil.rectangleiFromMinAndSize(minX + 1, minY + 1, durabilityBarLength, durabilityBarHeight));
+            canvas.drawTexture(Assets.get(barTexture, Texture.class).get(),
+                    JomlUtil.rectangleiFromMinAndSize(minX + 1, minY + 1, durabilityBarLength, durabilityBarHeight));
         }
     }
 
@@ -69,8 +71,7 @@ public class DurabilityClientSystem extends BaseComponentSystem {
     }
 
     /**
-     * Event sent when the tooltip is requested.
-     * Event is modified to include a line on durability.
+     * Event sent when the tooltip is requested. Event is modified to include a line on durability.
      *
      * @param event The event sent
      * @param entity The entity sending the event
