@@ -15,6 +15,7 @@
  */
 package org.terasology.durability.systems;
 
+import org.joml.Vector3i;
 import org.terasology.durability.components.DurabilityComponent;
 import org.terasology.durability.components.OverTimeDurabilityReduceComponent;
 import org.terasology.durability.components.RetainDurabilityComponent;
@@ -84,7 +85,7 @@ public class DurabilityAuthoritySystem extends BaseComponentSystem implements Up
         EntityRef tool = event.getDirectCause();
         DurabilityComponent durabilityComponent = tool.getComponent(DurabilityComponent.class);
         if (durabilityComponent != null) {
-            Block block = blockComponent.getBlock();
+            Block block = blockComponent.block;
             Iterable<String> categoriesIterator = block.getBlockFamily().getCategories();
             if (isTheRightTool(categoriesIterator, event.getDamageType())) {
                 // It was the right tool for the job, so reduce the durability
@@ -158,7 +159,7 @@ public class DurabilityAuthoritySystem extends BaseComponentSystem implements Up
      */
     @ReceiveEvent(priority = EventPriority.PRIORITY_TRIVIAL)
     public void destroyItemOnZeroDurability(DurabilityExhaustedEvent event, EntityRef entity, DurabilityComponent durabilityComponent, BlockComponent blockComponent) {
-        worldProvider.setBlock(blockComponent.getPosition(), blockManager.getBlock(BlockManager.AIR_ID));
+        worldProvider.setBlock(blockComponent.getPosition(new Vector3i()), blockManager.getBlock(BlockManager.AIR_ID));
         event.consume();
     }
 
