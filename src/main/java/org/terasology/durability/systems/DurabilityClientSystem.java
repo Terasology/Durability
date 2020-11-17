@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 package org.terasology.durability.systems;
 
+import org.joml.Rectanglei;
 import org.terasology.math.JomlUtil;
 import org.terasology.utilities.Assets;
 import org.terasology.assets.ResourceUrn;
@@ -55,7 +56,7 @@ public class DurabilityClientSystem extends BaseComponentSystem {
 
             ResourceUrn barTexture = TextureUtil.getTextureUriForColor(terasologyColor);
 
-            canvas.drawTexture(Assets.get(backgroundTexture, Texture.class).get(), JomlUtil.rectangleiFromMinAndSize(minX, minY, maxX, maxY));
+            canvas.drawTexture(Assets.get(backgroundTexture, Texture.class).get(), new Rectanglei(minX, minY, maxX, maxY));
             int durabilityBarLength = (int) (durabilityPercentage * (maxX - minX - 1));
             int durabilityBarHeight = maxY - minY - 1;
             canvas.drawTexture(Assets.get(barTexture, Texture.class).get(), JomlUtil.rectangleiFromMinAndSize(minX + 1, minY + 1, durabilityBarLength, durabilityBarHeight));
