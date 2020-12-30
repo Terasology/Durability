@@ -1,11 +1,14 @@
 {
-    "id": "Durability",
-    "version": "1.1.0",
-    "author": "MarcinSc,Josharias",
-    "displayName": "Durability",
-    "description": "A library for items and blocks to go poof after much use",
-    "dependencies": [
-        { "id": "Inventory", "minVersion": "1.1.0" }
-    ],
-    "isLibrary": true
+  "id": "Durability",
+  "version": "1.2.0-SNAPSHOT",
+  "author": "MarcinSc,Josharias",
+  "displayName": "Durability",
+  "description": "A library for items and blocks to go poof after much use",
+  "dependencies": [
+    {
+      "id": "Inventory",
+      "minVersion": "1.1.0"
+    }
+  ],
+  "isLibrary": true
 }
