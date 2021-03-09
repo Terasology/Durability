@@ -15,7 +15,7 @@
  */
 package org.terasology.durability.events;
 
-import org.terasology.entitySystem.event.Event;
+import org.terasology.engine.entitySystem.event.Event;
 
 /**
  * Event sent after the durability of an item is reduced

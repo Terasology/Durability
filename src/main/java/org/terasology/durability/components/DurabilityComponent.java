@@ -15,9 +15,9 @@
  */
 package org.terasology.durability.components;
 
-import org.terasology.entitySystem.Component;
-import org.terasology.logic.inventory.ItemDifferentiating;
-import org.terasology.network.Replicate;
+import org.terasology.engine.entitySystem.Component;
+import org.terasology.engine.logic.inventory.ItemDifferentiating;
+import org.terasology.engine.network.Replicate;
 
 /**
  * Durability component that enables the item/block to have durability

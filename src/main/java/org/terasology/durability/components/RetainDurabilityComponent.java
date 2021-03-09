@@ -15,7 +15,7 @@
  */
 package org.terasology.durability.components;
 
-import org.terasology.entitySystem.Component;
+import org.terasology.engine.entitySystem.Component;
 
 /**
  * Adding this to an entity will copy both itself and DurabilityComponent from item to block and from block to item
