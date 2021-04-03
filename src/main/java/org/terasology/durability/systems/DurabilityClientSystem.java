@@ -3,7 +3,7 @@
 package org.terasology.durability.systems;
 
 import org.joml.Vector2i;
-import org.terasology.assets.ResourceUrn;
+import org.terasology.gestalt.assets.ResourceUrn;
 import org.terasology.durability.components.DurabilityComponent;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.entitySystem.event.ReceiveEvent;
