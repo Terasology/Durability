@@ -44,7 +44,7 @@ public class DurabilityComponent implements Component<DurabilityComponent>, Item
     }
 
     @Override
-    public void copy(DurabilityComponent other) {
+    public void copyFrom(DurabilityComponent other) {
         this.durability = other.durability;
         this.maxDurability = other.maxDurability;
     }
