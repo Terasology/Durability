@@ -27,7 +27,6 @@ import org.terasology.engine.entitySystem.entity.EntityManager;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.entitySystem.event.EventPriority;
 import org.terasology.engine.entitySystem.event.Priority;
-import org.terasology.engine.entitySystem.event.ReceiveEvent;
 import org.terasology.engine.entitySystem.prefab.Prefab;
 import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
 import org.terasology.engine.entitySystem.systems.RegisterMode;
@@ -43,6 +42,7 @@ import org.terasology.engine.world.block.BlockManager;
 import org.terasology.engine.world.block.entity.damage.BlockDamageModifierComponent;
 import org.terasology.engine.world.block.items.OnBlockItemPlaced;
 import org.terasology.engine.world.block.items.OnBlockToItem;
+import org.terasology.gestalt.entitysystem.event.ReceiveEvent;
 
 /**
  * Authority system that handles reducing durability and destroying items
