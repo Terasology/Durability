@@ -3,7 +3,6 @@
 package org.terasology.durability.systems;
 
 import org.joml.Vector2i;
-import org.terasology.gestalt.assets.ResourceUrn;
 import org.terasology.durability.components.DurabilityComponent;
 import org.terasology.engine.entitySystem.entity.EntityRef;
 import org.terasology.engine.entitySystem.event.ReceiveEvent;
@@ -12,10 +11,11 @@ import org.terasology.engine.entitySystem.systems.RegisterMode;
 import org.terasology.engine.entitySystem.systems.RegisterSystem;
 import org.terasology.engine.rendering.assets.texture.Texture;
 import org.terasology.engine.rendering.assets.texture.TextureUtil;
+import org.terasology.engine.utilities.Assets;
+import org.terasology.gestalt.assets.ResourceUrn;
+import org.terasology.joml.geom.Rectanglei;
 import org.terasology.module.inventory.ui.GetItemTooltip;
 import org.terasology.module.inventory.ui.InventoryCellRendered;
-import org.terasology.engine.utilities.Assets;
-import org.terasology.joml.geom.Rectanglei;
 import org.terasology.nui.Canvas;
 import org.terasology.nui.Color;
 import org.terasology.nui.widgets.TooltipLine;
